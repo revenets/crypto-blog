@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+News {{ news.id }}
+{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <h2 class="h2 mb-5">{{ news.title }}</h2>
+
+    <div class="news__block">
+        <img class="news__img" src="{{ news.media_content.url }}">
+        <p> {{ news.description }} </p>
+    </div>
+
+    <div class="bottom-info">
+        <p class="updated-at text-secondary align-middle">{{ news.updated|date:'M d Y H:i' }}</p>
+
+        <div class="back-button">
+            <a href="{% url 'blog:blog' %}" class="btn btn-outline-secondary" role="button">Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
