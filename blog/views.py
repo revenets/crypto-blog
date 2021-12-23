@@ -6,9 +6,10 @@ from .models import *
 
 
 class BlogListView(ListView):
+    paginate_by = 6
     model = News
     template_name = "blog/blog.html"
-    context_object_name = "all_news"
+
 
 
 class NewsDetailView(DetailView):

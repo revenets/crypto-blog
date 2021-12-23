@@ -1,25 +1,97 @@
-{% extends 'blog/base.html' %} 
-{% load static %} 
-
+{% extends 'blog/base.html' %}
+{% load static %}
 {% block title %} 
-    Blog 
-{% endblock %} 
+    Blog
+{% endblock %}
 
 {% block content %}
 
-<div class="card-group">
-    {% for news in all_news %}
+<div class="relative max-w-7xl mx-auto">
+    <div class="text-center">
+        <h2 class="
+                text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">
+            From the blog
+        </h2>
+        <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa
+            libero labore natus atque, ducimus sed.
+        </p>
+    </div>
 
-    <div class="card rounded">
-        <img src="{{ news.media_content.url }}" class="card-img-top" alt="{{ news.id }}">
-        <div class="card-body">
-          <h5 class="card-title">{{ news }}</h5>
-          <a href="{% url 'blog:news' news.id %}" class="btn btn-primary stretched-link">Read news</a>
-          <p class="card-text"><small class="text-muted">Last updated {{ news.updated|date:'M d Y H:i' }}</small></p>
+    <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
+
+        {% for news in page_obj %}
+
+        <div class="flex flex-col rounded-lg shadow-lg overflow-hidden">
+            <div class="flex-shrink-0">
+                <!-- <img src="{{ news.media_content.url }}" class="h-8 w-full object-cover" alt="{{ news.id }}"> -->
+                <img class="h-48 w-full object-cover" 
+                    src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1679&amp;q=80" 
+                    alt="">
+            </div>
+            
+            <div class="flex-1 bg-white p-6 flex flex-col justify-between">
+                <div class="flex-1">
+                    <a href="{% url 'blog:news' news.id %}" class="block mt-2">
+                        <p class="text-xl font-semibold text-gray-900">{{ news }}</p>
+                        <p class="mt-3 text-base text-gray-500">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            Omnis odio, sint harum inventore, deleniti vel non sit voluptas quo cumque recusandae similique. 
+                            Dicta assumenda cupiditate odit voluptatem quasi accusamus tempora!
+                        </p>
+                    </a>
+                </div>
+                <div class="mt-6 flex items-center">
+                    <p class="text-sm font-medium text-gray-900">
+                        Last updated {{ news.updated|date:'M d Y H:i' }}
+                    </p>
+                </div>
+                
+            </div>
         </div>
-      </div>
-    
-    {% endfor %}
+
+        {% endfor %}
+
+    </div>
 </div>
 
+
+<div class="pagination flex items-center space-x-1" 
+    style="margin-top: 50px; align-content: center; justify-content: space-between;">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="px-4 py-2 text-gray-700 bg-gray-200  rounded-md hover:bg-blue-400 hover:text-white">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class=" px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-blue-400 hover:text-white">
+                previous
+            </a>
+        {% endif %}
+
+        <!--        <span class="current">-->
+        <!--            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.-->
+        <!--        </span>-->
+
+        {% for p in page_obj.paginator.page_range %} 
+        
+            {% if page_obj.number == p %}
+            <a href="?page={{ p }}" class=" px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-blue-400 hover:text-white">
+                {{ p }}
+            </a>
+            {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:+3 %}
+            <a href="?page={{ p }}" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-blue-400 hover:text-white">
+                {{ p }}
+            </a>
+            {% endif %} 
+
+        {% endfor %} 
+        
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-blue-400 hover:text-white">
+                next
+            </a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-blue-400 hover:text-white">
+                last &raquo;
+            </a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}
